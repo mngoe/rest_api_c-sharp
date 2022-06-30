@@ -15,6 +15,12 @@
     <ProjectReference Include="..\OpenImis.DB.SqlServer\OpenImis.DB.SqlServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ChequeModule\Logic\" />
+    <Folder Include="ChequeModule\Models\" />
+    <Folder Include="ChequeModule\Repositories\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties BuildVersion_StartDate="2000/1/1" /></VisualStudio></ProjectExtensions>
 
 </Project>
