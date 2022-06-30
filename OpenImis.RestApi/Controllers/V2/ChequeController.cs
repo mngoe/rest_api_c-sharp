@@ -35,7 +35,7 @@ namespace OpenImis.RestApi.Controllers.V2 {
     }
 }
 
-/**************** Generated token to execute your Get Cheque  ********************************************************************************************
+/**************** Generated token to execute your Get Cheque until 07/07/2022 ********************************************************************************************
  * 
  * 
     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyVVVJRCI6IjRhMWZiYjBlLWFhMzctNGRkYS04OTE0LTk3YzQ3YTViNzY2NSIsImV4cCI6MTY1NzAxNTcxNCwiaXNzIjoiaHR0cDovL29wZW5pbWlzLm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaW1pcy5vcmcifQ.z8H_pflIc73W8-wu1WsaHybHSQXXUkBQ7S9bMAXMdT0
