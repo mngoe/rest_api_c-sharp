@@ -15,17 +15,13 @@ namespace OpenImis.ModulesV2.ServiceModule
         {
         }
 
-        SqlConnection conn = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductNewdb;" + "User ID=openimis;" + "Password=openimis22;" +
+        SqlConnection conn = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductDevDbServer;" + "User ID=openimis;" + "Password=openimis22;" +
             "integrated security = SSPI;" + "MultipleActiveResultSets =True;");
         SqlDataReader dr = null;
 
-        SqlConnection conn_sub = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductNewdb;" + "User ID=openimis;" + "Password=openimis22;" +
-            "integrated security = SSPI;" + "MultipleActiveResultSets=True;");
+        SqlConnection conn_sub = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductDevDbServer;" + "User ID=openimis;" + "Password=openimis22;" +
+            "integrated security = SSPI;" + "MultipleActiveResultSets=True;"); // create a new connection in same time to avoid or fix problem multiple results when a sqldatareader is used or opened
         SqlDataReader dr_sub = null;
-
-        SqlConnection conn_sub2 = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductNewdb;" + "User ID=openimis;" + "Password=openimis22;" +
-            "integrated security = SSPI;" + "MultipleActiveResultSets=True;");
-        SqlDataReader dr_sub2 = null;
 
 
 
@@ -53,26 +49,26 @@ namespace OpenImis.ModulesV2.ServiceModule
                 if (conn.State == ConnectionState.Open)// check the state of connection
                 {
                     Console.WriteLine("Connection was succesfull \n");
-                    cmd.CommandText = "SELECT * From [openimisproductNewdb].[dbo].[tblServiceProductItems]";
+                    cmd.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceProductItems]";
 
                     //get the query result
                     dr = cmd.ExecuteReader(CommandBehavior.SingleResult);
 
-                    var cols = new List<string>();
+                    var cols = new List<string>(); // create a list of string
                     for (var i = 0; i < dr.FieldCount; i++)
                         cols.Add(dr.GetName(i));
 
 
                     while (dr.Read())
                     {
-                        var getId = Convert.ToString(dr["ServiceID"]);
-                        results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId));
+                        var getId = Convert.ToString(dr["ServiceID"]); //convert the ID got into string
+                        results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId)); // add in the list, the results of serialized data from executed request
                     }
                     dr.Close();
 
                 }
             }
-                catch (Exception ex)
+                catch (Exception ex) 
             {
                 Console.Write(ex.Message);
             }
@@ -91,12 +87,10 @@ namespace OpenImis.ModulesV2.ServiceModule
             var results = new Dictionary<string, object>();
             var result_sub_req = new Dictionary<string, object>();
             SqlCommand cmd_sub = new SqlCommand();
-            SqlCommand cmd_sub2 = new SqlCommand();
-
 
                     foreach (var col in cols)
                     {
-                        if (col == "ServiceIDFkSCP")
+                        if (col == "ServiceLinked")
                         {
                             try
                             {
@@ -107,14 +101,14 @@ namespace OpenImis.ModulesV2.ServiceModule
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open) // check the state of connection
                                 {
-                                    cmd_sub.CommandText = "SELECT * From [openimisproductNewdb].[dbo].[tblServiceContainedPackage] where tblServiceContainedPackage.ServiceId =" + id;
+                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceContainedPackage] where tblServiceContainedPackage.ServiceLinked =" + id;
                                     //get the query result
                                     dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleRow);
                                     var cols_sub = new List<string>();
                                     for (var i = 0; i < dr_sub.FieldCount; i++)
-                                        cols_sub.Add(dr_sub.GetName(i));
+                                        cols_sub.Add(dr_sub.GetName(i)); // insert field column within the list of string
                                     while (dr_sub.Read())
-                                        results.Add(col, SerializeRowDr(cols_sub, dr_sub));
+                                        results.Add(col, SerializeRowDr(cols_sub, dr_sub)); // add within the Dictionary the serialize data where key is the list of field and the value is a dictionary. 
                                     dr_sub.Close();
                                 }
                             }
@@ -134,22 +128,22 @@ namespace OpenImis.ModulesV2.ServiceModule
                         {
                             try
                             {
-                                cmd_sub2.CommandTimeout = 60; //specify the time (second)
-                                cmd_sub2.Connection = conn_sub2; // copy connection string
-                                cmd_sub2.CommandType = CommandType.Text;
+                                cmd_sub.CommandTimeout = 60; //specify the time (second)
+                                cmd_sub.Connection = conn_sub; // copy connection string
+                                cmd_sub.CommandType = CommandType.Text;
 
-                                conn_sub2.Open();
-                                if (conn_sub2.State == ConnectionState.Open)
+                                conn_sub.Open();
+                                if (conn_sub.State == ConnectionState.Open)
                                 {
-                                    cmd_sub2.CommandText = "SELECT * From [openimisproductNewdb].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
+                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
                                     //get the query result
-                                    dr_sub2 = cmd_sub2.ExecuteReader(CommandBehavior.SingleRow);
-                                    var cols_sub2 = new List<string>();
-                                    for (var i = 0; i < dr_sub2.FieldCount; i++)
-                                        cols_sub2.Add(dr_sub2.GetName(i));
-                                    while (dr_sub2.Read())
-                                        results.Add(col, SerializeRowDr(cols_sub2, dr_sub2));
-                                    dr_sub2.Close();
+                                    dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleRow);
+                                    var cols_sub = new List<string>();
+                                    for (var i = 0; i < dr_sub.FieldCount; i++)
+                                        cols_sub.Add(dr_sub.GetName(i));
+                                    while (dr_sub.Read())
+                                        results.Add(col, SerializeRowDr(cols_sub, dr_sub));
+                                    dr_sub.Close();
                                 }
                             }
                             catch (Exception ex)
@@ -158,7 +152,7 @@ namespace OpenImis.ModulesV2.ServiceModule
                             }
                             finally
                             {
-                                conn_sub2.Close(); //close the connection
+                                conn_sub.Close(); //close the connection
 
                             }
                         }
@@ -171,22 +165,11 @@ namespace OpenImis.ModulesV2.ServiceModule
         }
 
         private Dictionary<string, object> SerializeRowDr(IEnumerable<string> cols,
-                                                        SqlDataReader dr)
+                                                        SqlDataReader dr) // function to serialize sub data requested
         {
             var result = new Dictionary<string, object>();
             foreach (var col in cols)
                 result.Add(col, dr[col]);
-            return result;
-        }
-
-        private Dictionary<string, object> SerializeRowDr2(string Ids,
-                                                        SqlDataReader dr)
-        {
-
-
-            var result = new Dictionary<string, object>();
-            //foreach (var col in cols)
-              //  result.Add(col, dr[col]);
             return result;
         }
 
