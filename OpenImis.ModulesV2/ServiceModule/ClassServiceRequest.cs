@@ -87,16 +87,16 @@ namespace OpenImis.ModulesV2.ServiceModule
             var results = new Dictionary<string, object>();
             var result_sub_req = new Dictionary<string, object>();
             SqlCommand cmd_sub = new SqlCommand();
+            cmd_sub.CommandTimeout = 60; //specify the time (second)
+            cmd_sub.Connection = conn_sub; // copy connection string
+            cmd_sub.CommandType = CommandType.Text;
 
-                    foreach (var col in cols)
+            foreach (var col in cols)
                     {
                         if (col == "ServiceLinked")
                         {
                             try
                             {
-                                cmd_sub.CommandTimeout = 60; //specify the time (second)
-                                cmd_sub.Connection = conn_sub; // copy connection string
-                                cmd_sub.CommandType = CommandType.Text;
 
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open) // check the state of connection
@@ -128,10 +128,6 @@ namespace OpenImis.ModulesV2.ServiceModule
                         {
                             try
                             {
-                                cmd_sub.CommandTimeout = 60; //specify the time (second)
-                                cmd_sub.Connection = conn_sub; // copy connection string
-                                cmd_sub.CommandType = CommandType.Text;
-
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open)
                                 {
