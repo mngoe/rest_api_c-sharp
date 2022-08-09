@@ -124,7 +124,7 @@ namespace OpenImis.ModulesV2.ServiceModule
 
                         }
                             
-                        else if(col == "ItemID")
+                        else if(col == "ItemID") // In the column is ItemID
                         {
                             try
                             {
