@@ -23,8 +23,6 @@ namespace OpenImis.ModulesV2.ServiceModule
             "integrated security = SSPI;" + "MultipleActiveResultSets=True;"); // create a new connection in same time to avoid or fix problem multiple results when a sqldatareader is used or opened
         SqlDataReader dr_sub = null;
 
-
-
         public IEnumerable<Dictionary<string, object>> SerializeDr()
         {
 
@@ -58,11 +56,17 @@ namespace OpenImis.ModulesV2.ServiceModule
                     for (var i = 0; i < dr.FieldCount; i++)
                         cols.Add(dr.GetName(i));
 
-
+                    var temp = "";
+                    var getId = "";
                     while (dr.Read())
                     {
-                        var getId = Convert.ToString(dr["ServiceID"]); //convert the ID got into string
-                        results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId)); // add in the list, the results of serialized data from executed request
+                        getId = Convert.ToString(dr["ServiceID"]); //convert the ID got into string
+                        if (temp != getId)
+                        {
+                            results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId)); // add in the list, the results of serialized data from executed request
+                            temp = getId;
+                        }
+                     
                     }
                     dr.Close();
 
@@ -85,7 +89,8 @@ namespace OpenImis.ModulesV2.ServiceModule
                                                        SqlDataReader dr, string id)
         {
             var results = new Dictionary<string, object>();
-            var result_sub_req = new Dictionary<string, object>();
+            var result_lis_sub_req_serv = new List<Dictionary<string, object>>();
+            var result_lis_sub_req_item = new List<Dictionary<string, object>>();
             SqlCommand cmd_sub = new SqlCommand();
             cmd_sub.CommandTimeout = 60; //specify the time (second)
             cmd_sub.Connection = conn_sub; // copy connection string
@@ -93,7 +98,7 @@ namespace OpenImis.ModulesV2.ServiceModule
 
             foreach (var col in cols)
                     {
-                        if (col == "ServiceLinked")
+                        if (col == "ServicePack")
                         {
                             try
                             {
@@ -101,14 +106,18 @@ namespace OpenImis.ModulesV2.ServiceModule
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open) // check the state of connection
                                 {
-                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceContainedPackage] where tblServiceContainedPackage.ServiceLinked =" + id;
+                            cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceContainedPackage] where tblServiceContainedPackage.ServiceLinked =" + id;
                                     //get the query result
-                                    dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleRow);
+                                    dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleResult);
                                     var cols_sub = new List<string>();
                                     for (var i = 0; i < dr_sub.FieldCount; i++)
                                         cols_sub.Add(dr_sub.GetName(i)); // insert field column within the list of string
                                     while (dr_sub.Read())
-                                        results.Add(col, SerializeRowDr(cols_sub, dr_sub)); // add within the Dictionary the serialize data where key is the list of field and the value is a dictionary. 
+                                        result_lis_sub_req_serv.Add(SerializeRowDr(cols_sub, dr_sub));
+
+                                    results.Add(col, result_lis_sub_req_serv); // add within the Dictionary the serialize data where key is the list of field and the value is a dictionary.
+
+
                                     dr_sub.Close();
                                 }
                             }
@@ -124,21 +133,23 @@ namespace OpenImis.ModulesV2.ServiceModule
 
                         }
                             
-                        else if(col == "ItemID") // In the column is ItemID
+                        else if(col == "Items") // In the column is ItemID
                         {
                             try
                             {
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open)
                                 {
-                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
+                            cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
                                     //get the query result
-                                    dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleRow);
+                                    dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleResult);
                                     var cols_sub = new List<string>();
                                     for (var i = 0; i < dr_sub.FieldCount; i++)
                                         cols_sub.Add(dr_sub.GetName(i));
                                     while (dr_sub.Read())
-                                        results.Add(col, SerializeRowDr(cols_sub, dr_sub));
+                                        result_lis_sub_req_item.Add(SerializeRowDr(cols_sub, dr_sub));
+
+                                    results.Add(col, result_lis_sub_req_item); // add within the Dictionary the serialize data where key is the list of field and the value is a dictionary.
                                     dr_sub.Close();
                                 }
                             }
