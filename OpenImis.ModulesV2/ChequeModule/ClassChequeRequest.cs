@@ -8,10 +8,10 @@ using System.Text;
 
 namespace OpenImis.ModulesV2.ChequeModule
 {
-   public class ClassChequeRequest
+   public class ClassSubServiceRequest
     {
 
-        public ClassChequeRequest()
+        public ClassSubServiceRequest()
         {
         }
 
