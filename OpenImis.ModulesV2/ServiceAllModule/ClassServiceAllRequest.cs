@@ -32,7 +32,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
             StringBuilder s = new StringBuilder();
             var results = new List<Dictionary<string, object>>();
             var results_list_all = new List<Dictionary<string,  object>>();
-            var listcheck_id_services = new List<bool>();
+            
             try
             {
 
@@ -64,7 +64,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                         var getId = Convert.ToString(dr["ServiceID"]); //convert the ID got into string
                         //if (temp != getId)
                         //{
-                            results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId, CheckServiceId(getId))); // add in the list, the results of serialized data from executed request
+                            results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId)); // add in the list, the results of serialized data from executed request
                             //temp = getId;
                         //}
                      
@@ -87,19 +87,23 @@ namespace OpenImis.ModulesV2.ServiceAllModule
 
 
         private Dictionary<string,  object> SerializeRow_SubRow_Dr(IEnumerable<string> cols,
-                                                       SqlDataReader dr, string id, List<bool> listckeckid)
+                                                       SqlDataReader dr, string id)
         {
             var results = new Dictionary<string, object>();
             var result_lis_sub_req_serv = new List<Dictionary<string, object>>();
             var result_lis_sub_req_item = new List<Dictionary<string, object>>();
+            var listcheck_id_services = new List<bool>();
+
             SqlCommand cmd_sub = new SqlCommand();
             cmd_sub.CommandTimeout = 60; //specify the time (second)
             cmd_sub.Connection = conn_sub; // copy connection string
             cmd_sub.CommandType = CommandType.Text;
 
+            listcheck_id_services = CheckServiceId(id);
+
             foreach (var col in cols)
              {
-                if (col == "ServLinkRep" && listckeckid[1])
+                if (col == "ServLinkRep" && listcheck_id_services[1])
                 {
                     try
                     {
@@ -134,7 +138,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
 
                 }
                             
-                else if(col == "ServItemRep" && listckeckid[0]) // In the column is ItemID
+                else if(col == "ServItemRep" && listcheck_id_services[0]) // In the column is ItemID
                 {
                     try
                     {
@@ -221,7 +225,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                     cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceContainedPackage] where tblServiceContainedPackage.ServiceLinked =" + id;
                     //get the query result
                     dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleResult);
-                    if (dr_sub.Read() && Convert.ToString(dr_sub["ServiceID"]) == id)
+                    if (dr_sub.Read() && Convert.ToString(dr_sub["ServiceLinked"]) == id)
                         resultBool[1] = true;
 
                     dr_sub.Close();

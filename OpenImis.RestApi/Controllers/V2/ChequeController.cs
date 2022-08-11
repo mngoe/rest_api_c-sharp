@@ -27,7 +27,7 @@ namespace OpenImis.RestApi.Controllers.V2 {
 
         public IActionResult GetListChequeItems()
         {
-            ClassSubServiceRequest getRequest = new ClassSubServiceRequest();
+            ClassChequeRequest getRequest = new ClassChequeRequest();
             var response = getRequest.SerializeDr();
             return Json(response);
         }
