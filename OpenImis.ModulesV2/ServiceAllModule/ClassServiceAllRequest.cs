@@ -56,17 +56,10 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                     var cols = new List<string>(); // create a list of string
                     for (var i = 0; i < dr.FieldCount; i++)
                         cols.Add(dr.GetName(i));
-
-                    //var temp = "";
-                    //var getId = "";
                     while (dr.Read())
                     {
                         var getId = Convert.ToString(dr["ServiceID"]); //convert the ID got into string
-                        //if (temp != getId)
-                        //{
                             results_list_all.Add(SerializeRow_SubRow_Dr(cols, dr, getId)); // add in the list, the results of serialized data from executed request
-                            //temp = getId;
-                        //}
                      
                     }
                     dr.Close();
