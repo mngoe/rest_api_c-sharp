@@ -16,6 +16,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="MainItemModule\Logic\" />
+    <Folder Include="MainItemModule\Models\" />
+    <Folder Include="MainItemModule\Repositories\" />
+    <Folder Include="MainServiceModule\Logic\" />
+    <Folder Include="MainServiceModule\Models\" />
+    <Folder Include="MainServiceModule\Repositories\" />
+    <Folder Include="SubItemModule\Logic\" />
+    <Folder Include="SubItemModule\Models\" />
+    <Folder Include="SubItemModule\Repositories\" />
+    <Folder Include="SubServiceModule\Logic\" />
+    <Folder Include="SubServiceModule\Models\" />
+    <Folder Include="SubServiceModule\Repositories\" />
     <Folder Include="ChequeModule\Logic\" />
     <Folder Include="ChequeModule\Models\" />
     <Folder Include="ChequeModule\Repositories\" />

@@ -6,16 +6,16 @@ using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace OpenImis.ModulesV2.ChequeModule
+namespace OpenImis.ModulesV2.MainServiceModule
 {
-   public class ClassChequeRequest
+   public class ClassMainServiceRequest
     {
 
-        public ClassChequeRequest()
+        public ClassMainServiceRequest()
         {
         }
 
-        SqlConnection conn = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductNewdb;" + "User ID=openimis;" + "Password=openimis22;");
+        SqlConnection conn = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductDevDbServer;" + "User ID=openimis;" + "Password=openimis22;");
         SqlDataReader dr = null;
 
         public IEnumerable<Dictionary<string, object>> SerializeDr()
@@ -36,7 +36,7 @@ namespace OpenImis.ModulesV2.ChequeModule
                 if (conn.State == ConnectionState.Open)// check the state of connection
                 {
                     Console.WriteLine("Connection was succesfull \n");
-                    cmd.CommandText = "SELECT [chequeImportLineCode], [chequeImportLineStatus] FROM [openimisproductNewdb].[dbo].[tblChequeSanteImportLine] ORDER BY [idChequeImportLine]";
+                    cmd.CommandText = "SELECT * FROM [openimisproductDevDbServer].[dbo].[tblServices] ORDER BY [ServiceID]";
 
                     //get the query result
                     dr = cmd.ExecuteReader(CommandBehavior.SingleResult);
