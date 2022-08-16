@@ -27,7 +27,8 @@ namespace OpenImis.DB.SqlServer
         public int? AuditUserId { get; set; }
         public byte[] RowId { get; set; }
         public string ServCategory { get; set; }
-
+        //public byte ManualPrice { get; set; }
+        //public string ServPackageType { get; set; }
         public ICollection<TblClaimServices> TblClaimServices { get; set; }
         public ICollection<TblPlservicesDetail> TblPlservicesDetail { get; set; }
         public ICollection<TblProductServices> TblProductServices { get; set; }

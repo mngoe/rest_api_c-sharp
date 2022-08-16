@@ -2555,8 +2555,12 @@ namespace OpenImis.DB.SqlServer
                 entity.Property(e => e.ValidityFrom)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
+                /*entity.Property(e => e.ManualPrice).HasColumnName("manualPrice")
+                    .HasMaxLength(1);
+                entity.Property(e => e.ServPackageType).HasMaxLength(1);
 
                 entity.Property(e => e.ValidityTo).HasColumnType("datetime");
+            */
             });
 
             modelBuilder.Entity<TblSubmittedPhotos>(entity =>

@@ -140,7 +140,7 @@ namespace OpenImis.ModulesV2.ServiceModule
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open)
                                 {
-                            cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
+                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
                                     //get the query result
                                     dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleResult);
                                     var cols_sub = new List<string>();

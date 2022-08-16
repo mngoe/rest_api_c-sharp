@@ -269,7 +269,7 @@ namespace OpenImis.ModulesV3
             string part = "";
 
             var listImisModules = _configuration.GetSection("ImisModules").Get<List<ConfigImisModules>>();
-           
+
             var module = listImisModules.Where(m => m.Version == apiVersion).Select(x => GetPropValue(x, moduleName)).FirstOrDefault();
 
             if (GetPropValue(module, sectionName) != null)

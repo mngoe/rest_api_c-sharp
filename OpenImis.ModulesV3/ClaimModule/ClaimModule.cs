@@ -4,7 +4,7 @@ using OpenImis.ModulesV3.ClaimModule.Logic;
 
 namespace OpenImis.ModulesV3.ClaimModule
 {
-    public class ClaimModule 
+    public class ClaimModule
     {
         private IConfiguration _configuration;
         private readonly IHostingEnvironment _hostingEnvironment;
