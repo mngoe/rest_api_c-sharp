@@ -30,7 +30,7 @@ namespace OpenImis.ModulesV3.ClaimModule.Logic
             foreach (var claim in claims)
             {
                 result = claimRepository.Create(claim);
-
+                
                 Errors.Claim errorCode;
                 string message;
                 switch (result)

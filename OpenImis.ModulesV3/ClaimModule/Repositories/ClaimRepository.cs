@@ -152,7 +152,7 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                             join i in imisContext.TblItems on ci.ItemId equals i.ItemId
                             where c.ClaimCode == claimCode && c.ValidityTo == null && hf.Hfcode == hfCode && ci.ValidityTo == null && ci.ClaimItemStatus == 2
                             select new RejectedItem() { Code = i.ItemCode, Error = ci.RejectionReason };
-
+                            
                 rejectedItems = query.ToList();
             }
 
