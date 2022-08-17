@@ -47,7 +47,7 @@ namespace OpenImis.ModulesV2.ServiceModule
                 if (conn.State == ConnectionState.Open)// check the state of connection
                 {
                     Console.WriteLine("Connection was succesfull \n");
-                    cmd.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceProductItems]";
+                    cmd.CommandText = "SELECT * From [tblServiceProductItems]";
 
                     //get the query result
                     dr = cmd.ExecuteReader(CommandBehavior.SingleResult);
@@ -106,7 +106,7 @@ namespace OpenImis.ModulesV2.ServiceModule
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open) // check the state of connection
                                 {
-                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceContainedPackage] where tblServiceContainedPackage.ServiceLinked =" + id;
+                                    cmd_sub.CommandText = "SELECT * From [tblServiceContainedPackage] where tblServiceContainedPackage.ServiceLinked =" + id;
                                     //get the query result
                                     dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleResult);
                                     var cols_sub = new List<string>();
@@ -140,7 +140,7 @@ namespace OpenImis.ModulesV2.ServiceModule
                                 conn_sub.Open();
                                 if (conn_sub.State == ConnectionState.Open)
                                 {
-                                    cmd_sub.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
+                                    cmd_sub.CommandText = "SELECT * From [tblProductContainedPackage] where tblProductContainedPackage.ServiceId =" + id;
                                     //get the query result
                                     dr_sub = cmd_sub.ExecuteReader(CommandBehavior.SingleResult);
                                     var cols_sub = new List<string>();
