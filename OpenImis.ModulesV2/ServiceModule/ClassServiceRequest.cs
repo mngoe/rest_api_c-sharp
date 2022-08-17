@@ -37,7 +37,7 @@ namespace OpenImis.ModulesV2.ServiceModule
                                       "tblServices.ValidityFrom, tblServices.ValidityTo, tblServices.LegacyID, tblServices.AuditUserID, tblServices.RowID, ServCategory, ServPackageType, manualPrice," +
                                       "tblProductContainedPackage.ItemID AS Items, tblServiceContainedPackage.ServiceId AS ServicePack " +
                                       "FROM tblServices" + " INNER JOIN tblServiceContainedPackage" +
-                                      " ON tblServices.ServiceID = tblServiceContainedPackage.ServiceLinked" + " INNER JOIN [tblProductContainedPackage]" +
+                                      " ON tblServices.ServiceID = tblServiceContainedPackage.ServiceLinked" + " INNER JOIN tblProductContainedPackage" +
                                       " ON tblServiceContainedPackage.ServiceLinked = tblProductContainedPackage.ServiceID";
 
                     DbConnection connection = imisContext.Database.GetDbConnection();
