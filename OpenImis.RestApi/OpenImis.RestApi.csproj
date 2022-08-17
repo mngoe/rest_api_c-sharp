@@ -147,6 +147,6 @@
     </None>
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UseUniversalClock="True" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseUniversalClock="True" BuildVersion_UpdateAssemblyVersion="True" config_4appsettings_1Production_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

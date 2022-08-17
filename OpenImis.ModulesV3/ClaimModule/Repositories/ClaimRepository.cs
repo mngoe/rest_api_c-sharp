@@ -151,8 +151,8 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                             join ci in imisContext.TblClaimItems on c.ClaimId equals ci.ClaimId
                             join i in imisContext.TblItems on ci.ItemId equals i.ItemId
                             where c.ClaimCode == claimCode && c.ValidityTo == null && hf.Hfcode == hfCode && ci.ValidityTo == null && ci.ClaimItemStatus == 2
-                            select new RejectedItem() { Code = i.ItemCode, Error = ci.RejectionReason};
-
+                            select new RejectedItem() { Code = i.ItemCode, Error = ci.RejectionReason };
+                            
                 rejectedItems = query.ToList();
             }
 
@@ -177,7 +177,7 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                             join cs in imisContext.TblClaimServices on c.ClaimId equals cs.ClaimId
                             join s in imisContext.TblServices on cs.ServiceId equals s.ServiceId
                             where c.ClaimCode == claimCode && c.ValidityTo == null && hf.Hfcode == hfCode && cs.ValidityTo == null && cs.ClaimServiceStatus == 2
-                            select new RejectedService() { Code = s.ServCode, Error = cs.RejectionReason};
+                            select new RejectedService() { Code = s.ServCode, Error = cs.RejectionReason };
 
                 rejectedServices = query.ToList();
             }
