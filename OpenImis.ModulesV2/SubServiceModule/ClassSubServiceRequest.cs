@@ -5,6 +5,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using OpenImis.DB.SqlServer;
+using System.Data.Common;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using System.Xml;
+using System.Diagnostics;
 
 namespace OpenImis.ModulesV2.SubServiceModule
 {
@@ -15,41 +23,32 @@ namespace OpenImis.ModulesV2.SubServiceModule
         {
         }
 
-        SqlConnection conn = new SqlConnection("Data Source = localhost;" + "Initial Catalog=openimisproductDevDbServer;" + "User ID=openimis;" + "Password=openimis22;");
-        SqlDataReader dr = null;
-
-        
-
         public IEnumerable<Dictionary<string, object>> SerializeDr()
         {
-
-            SqlCommand cmd = new SqlCommand(); //create an instance of Sql command object
-            StringBuilder s = new StringBuilder();
             var results = new List<Dictionary<string, object>>();
             try
             {
-
-                cmd.CommandTimeout = 60; //specify the time (second)
-                cmd.Connection = conn; // copy connection string
-                cmd.CommandType = CommandType.Text;
-
-                //open the connection
-                conn.Open();
-                if (conn.State == ConnectionState.Open)// check the state of connection
+                using (var imisContext = new ImisDB())
                 {
-                    Console.WriteLine("Connection was succesfull \n");
-                    cmd.CommandText = "SELECT * From [openimisproductDevDbServer].[dbo].[tblServiceContainedPackage] ORDER BY [idSCP]";
+                    var sql = "SELECT * From tblServiceContainedPackage ORDER BY idSCP";
+                    DbConnection connection = imisContext.Database.GetDbConnection();
+                    using (DbCommand cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = sql;
+                        if (connection.State.Equals(ConnectionState.Closed)) connection.Open();
 
-                    //get the query result
-                    dr = cmd.ExecuteReader(CommandBehavior.SingleResult);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var cols = new List<string>();
+                            for (var i = 0; i < reader.FieldCount; i++)
+                                cols.Add(reader.GetName(i));
 
-                    var cols = new List<string>();
-                    for (var i = 0; i < dr.FieldCount; i++)
-                        cols.Add(dr.GetName(i));
+                            while (reader.Read())
+                                results.Add(SerializeRowDr(cols, reader));
+                            reader.Close();
+                        }
 
-                    while (dr.Read())
-                        results.Add(SerializeRowDr(cols, dr));
-                    dr.Close();
+                    }
 
                 }
             }
@@ -57,17 +56,12 @@ namespace OpenImis.ModulesV2.SubServiceModule
             {
                 Console.Write(ex.Message);
             }
-                finally
-            {
-                conn.Close(); //close the connection
-            }
-
             return results;
         }
 
 
         private Dictionary<string, object> SerializeRowDr(IEnumerable<string> cols,
-                                                        SqlDataReader dr)
+                                                        DbDataReader dr)
         {
             var result = new Dictionary<string, object>();
             foreach (var col in cols)
