@@ -65,7 +65,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
         }
 
 
-        private Dictionary<string,  object> SerializeRow_SubRow_Dr(IEnumerable<string> cols,
+        private Dictionary<string,  object> SerializeRow_SubRow_Dr(List <string> cols,
                                                        DbDataReader dr, string id)
         {
             var results = new Dictionary<string, object>();
@@ -75,9 +75,14 @@ namespace OpenImis.ModulesV2.ServiceAllModule
 
             listcheck_id_services = CheckServiceId(id);
 
+            if (listcheck_id_services[1])
+                cols.Add("SubService");
+            if (listcheck_id_services[0])
+                cols.Add("SubItems");
+
             foreach (var col in cols)
              {
-                if (col == "ServLinkRep" && listcheck_id_services[1])
+                if (col == "SubService" && listcheck_id_services[1])
                 {
                     try
                     {
@@ -112,7 +117,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
 
                 }
                             
-                else if(col == "ServItemRep" && listcheck_id_services[0]) // In the column is ItemID
+                else if(col == "SubItems" && listcheck_id_services[0]) // In the column is ItemID
                 {
                     try
                     {
