@@ -46,6 +46,9 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                             var cols = new List<string>(); // create a list of string
                             for (var i = 0; i < reader.FieldCount; i++)
                                 cols.Add(reader.GetName(i));
+                            cols.Add("SubService");
+                            cols.Add("SubItems");
+
                             while (reader.Read())
                             {
                                 var getId = Convert.ToString(reader["ServiceID"]); //convert the ID got into string
@@ -65,7 +68,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
         }
 
 
-        private Dictionary<string,  object> SerializeRow_SubRow_Dr(IEnumerable<string> cols,
+        private Dictionary<string,  object> SerializeRow_SubRow_Dr(List <string> cols,
                                                        DbDataReader dr, string id)
         {
             var results = new Dictionary<string, object>();
@@ -77,7 +80,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
 
             foreach (var col in cols)
              {
-                if (col == "ServLinkRep" && listcheck_id_services[1])
+                if (col == "SubService" && listcheck_id_services[1])
                 {
                     try
                     {
@@ -112,7 +115,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
 
                 }
                             
-                else if(col == "ServItemRep" && listcheck_id_services[0]) // In the column is ItemID
+                else if(col == "SubItems" && listcheck_id_services[0]) // In the column is ItemID
                 {
                     try
                     {
@@ -133,6 +136,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                                     while (reader.Read())
                                         result_lis_sub_req_item.Add(SerializeRowDr(cols_sub, reader));
                                     results.Add(col, result_lis_sub_req_item); // add within the Dictionary the serialize data where key is the list of field and the value is a dictionary.
+
                                     reader.Close();
 
                                 }
@@ -147,7 +151,8 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                 }
                        
                 else
-                    results.Add(col, dr[col]);      
+                    if (col!= "SubService" && col!= "SubItems")
+                        results.Add(col, dr[col]);      
              }
             
             return results;
