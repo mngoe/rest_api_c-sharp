@@ -46,6 +46,9 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                             var cols = new List<string>(); // create a list of string
                             for (var i = 0; i < reader.FieldCount; i++)
                                 cols.Add(reader.GetName(i));
+                            cols.Add("SubService");
+                            cols.Add("SubItems");
+
                             while (reader.Read())
                             {
                                 var getId = Convert.ToString(reader["ServiceID"]); //convert the ID got into string
@@ -74,11 +77,6 @@ namespace OpenImis.ModulesV2.ServiceAllModule
             var listcheck_id_services = new List<bool>();
 
             listcheck_id_services = CheckServiceId(id);
-
-            if (listcheck_id_services[1])
-                cols.Add("SubService");
-            if (listcheck_id_services[0])
-                cols.Add("SubItems");
 
             foreach (var col in cols)
              {
@@ -138,6 +136,7 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                                     while (reader.Read())
                                         result_lis_sub_req_item.Add(SerializeRowDr(cols_sub, reader));
                                     results.Add(col, result_lis_sub_req_item); // add within the Dictionary the serialize data where key is the list of field and the value is a dictionary.
+
                                     reader.Close();
 
                                 }
@@ -152,7 +151,8 @@ namespace OpenImis.ModulesV2.ServiceAllModule
                 }
                        
                 else
-                    results.Add(col, dr[col]);      
+                    if (col!= "SubService" && col!= "SubItems")
+                        results.Add(col, dr[col]);      
              }
             
             return results;
