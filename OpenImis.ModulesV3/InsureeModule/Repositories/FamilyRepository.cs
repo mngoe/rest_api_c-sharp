@@ -213,6 +213,14 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                 var premiumImportedParameter = OutputParameter.CreateOutputParameter("@PremiumImported", SqlDbType.Int);
                 var premiumRejectedParameter = OutputParameter.CreateOutputParameter("@PremiumRejected", SqlDbType.Int);
 
+_logger.LogWarning("Parametre USPConsumeEnrollments");
+_logger.LogWarning(returnParameter);
+Console.Write("Parametre USPConsumeEnrollments");
+Console.Write(returnParameter);
+Console.Write(familySentParameter);
+Console.Write(familyImportedParameter);
+
+
                 var sql = "exec @RV = uspConsumeEnrollments @XML, @Source, @SourceVersion, @FamilySent OUT, @FamilyImported OUT, @FamiliesUpd OUT, @FamilyRejected OUT, " +
                     "@InsureeSent OUT, @InsureeUpd OUT, @InsureeImported OUT, " +
                     "@PolicySent OUT, @PolicyImported OUT, @PolicyRejected OUT, @PolicyChanged OUT," +
@@ -224,7 +232,10 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                 {
 
                     cmd.CommandText = sql;
-
+_logger.LogWarning("SQL Request USPConsumeEnrollments");
+_logger.LogWarning(sql);
+Console.Write("SQL Request USPConsumeEnrollments");
+Console.Write(sql);
                     cmd.Parameters.AddRange(new[] { xmlParameter, source, sourceVersion, returnParameter, familySentParameter, familyImportedParameter, familiesUpdParameter,
                                             familyRejectedParameter, insureeSentParameter, insureeUpdParameter, insureeImportedParameter, policySentParameter,
                                             policyImportedParameter, policyRejectedParameter, policyChangedParameter, premiumSentParameter, premiumImportedParameter,
