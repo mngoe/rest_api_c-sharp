@@ -248,6 +248,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                 InsureeUpd = insureeUpdParameter.Value == DBNull.Value ? 0 : (int)insureeUpdParameter.Value;
                 InsureeImported = insureeImportedParameter.Value == DBNull.Value ? 0 : (int)insureeImportedParameter.Value;
                 RV = (int)returnParameter.Value;
+                UpdateChequeStatus(InsureeUpd); 
 
                 if (RV == 0 && (InsureeImported > 0 || InsureeUpd > 0))
                 {
@@ -322,6 +323,23 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             }
 
             return response;
+        }
+
+        public void UpdateChequeStatus(int insureeNumberLinked) //  updating the cheque status
+        {
+            using (var imisContext = new ImisDB())
+            {
+                var sql = "UPDATE tblChequeSanteImportLine" +
+                            "SET chequeImportLineStatus =" + Convert.ToString("Used") +
+                            "where  chequeImportLineCode =" + Convert.ToString(insureeNumberLinked) + "and chequeImportLineStatus not in" + Convert.ToString("Cancel");
+
+                DbConnection connection = imisContext.Database.GetDbConnection();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    if (connection.State.Equals(ConnectionState.Closed)) connection.Open();
+                     cmd.ExecuteReader();
+            }   }
         }
 
         public int UpdateControlNumber(EnrolFamilyModel familyModel, NewFamilyResponse serverResponse)
