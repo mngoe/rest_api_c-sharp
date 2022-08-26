@@ -331,8 +331,8 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             using (var imisContext = new ImisDB())
             {
                 var sql = "UPDATE tblChequeSanteImportLine" +
-                            " SET PolicyStatus = " + Convert.ToString("Used") +
-                            " where  chequeImportLineCode = " + Convert.ToString(insureeNumberLinked) + " and chequeImportLineStatus not in " + Convert.ToString("Cancel");
+                            " SET chequeImportLineStatus = " + Convert.ToString("Used") +
+                            " where chequeImportLineCode = " + Convert.ToString(insureeNumberLinked) + " and chequeImportLineStatus not in " + Convert.ToString("Cancel");
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
                 using (DbCommand cmd = connection.CreateCommand())
