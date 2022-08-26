@@ -333,9 +333,9 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
         {
             using (var imisContext = new ImisDB())
             {
-                var sql = "UPDATE tblChequeSanteImportLine" +
-                            "SET PolicyStatus =" + Convert.ToString("Used") +
-                            "where  chequeImportLineCode =" + Convert.ToString(insureeNumberLinked) + "and chequeImportLineStatus not in" + Convert.ToString("Cancel");
+                var sql = "UPDATE tblChequeSanteImportLine " +
+                          "SET chequeImportLineStatus = 'Used' "+
+                          " where  chequeImportLineCode = '" + Convert.ToString(insureeNumberLinked) + "' and chequeImportLineStatus != 'Cancel';";
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
                 using (DbCommand cmd = connection.CreateCommand())
@@ -351,11 +351,11 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
         {
             using (var imisContext = new ImisDB())
             {
-                var sql = "UPDATE tblPolicy" +
-                            "SET PolicyStatus = 1 " +
-                            "From tbPolicy " +
+                var sql = "UPDATE tblPolicy " +
+                            "SET PolicyStatus = '1' " +
+                            "From tblPolicy " +
                             "inner join tblInsureePolicy " +
-                            "on tblPolicy.PolicyId = tblInsureePolicy.PolicyId and tblInsureePolicy.InsureeId = " + Convert.ToString(insureeNumberLinked);
+                            "on tblPolicy.PolicyId = tblInsureePolicy.PolicyId and tblInsureePolicy.InsureeId = '" + Convert.ToString(insureeNumberLinked)+ "'";
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
                 using (DbCommand cmd = connection.CreateCommand())
