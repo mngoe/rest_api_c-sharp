@@ -16,10 +16,10 @@ using System.Diagnostics;
 
 namespace OpenImis.ModulesV2.SubItemModule
 {
-   public class ClassMainServiceRequest
+   public class ClassSubItemRequest
     {
 
-        public ClassMainServiceRequest()
+        public ClassSubItemRequest()
         {
         }
 
