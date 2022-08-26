@@ -248,7 +248,8 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                 InsureeUpd = insureeUpdParameter.Value == DBNull.Value ? 0 : (int)insureeUpdParameter.Value;
                 InsureeImported = insureeImportedParameter.Value == DBNull.Value ? 0 : (int)insureeImportedParameter.Value;
                 RV = (int)returnParameter.Value;
-                UpdateChequeStatus(InsureeUpd); 
+                UpdateChequeStatus(InsureeUpd);
+                UpdatePolicyStatus(InsureeUpd); // call the function to updatethe policy status
 
                 if (RV == 0 && (InsureeImported > 0 || InsureeUpd > 0))
                 {
@@ -330,7 +331,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             using (var imisContext = new ImisDB())
             {
                 var sql = "UPDATE tblChequeSanteImportLine" +
-                            "SET chequeImportLineStatus =" + Convert.ToString("Used") +
+                            "SET PolicyStatus =" + Convert.ToString("Used") +
                             "where  chequeImportLineCode =" + Convert.ToString(insureeNumberLinked) + "and chequeImportLineStatus not in" + Convert.ToString("Cancel");
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
@@ -340,6 +341,27 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                     if (connection.State.Equals(ConnectionState.Closed)) connection.Open();
                      cmd.ExecuteReader();
             }   }
+        }
+
+
+        public void UpdatePolicyStatus(int insureeNumberLinked) //  updating the policy status when creating a family
+        {
+            using (var imisContext = new ImisDB())
+            {
+                var sql = "UPDATE tblPolicy" +
+                            "SET PolicyStatus = 1 " +
+                            "From tbPolicy " +
+                            "inner join tblInsureePolicy " +
+                            "on tblPolicy.PolicyId = tblInsureePolicy.PolicyId and tblInsureePolicy.InsureeId = " + Convert.ToString(insureeNumberLinked);
+
+                DbConnection connection = imisContext.Database.GetDbConnection();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    if (connection.State.Equals(ConnectionState.Closed)) connection.Open();
+                    cmd.ExecuteReader();
+                }
+            }
         }
 
         public int UpdateControlNumber(EnrolFamilyModel familyModel, NewFamilyResponse serverResponse)
