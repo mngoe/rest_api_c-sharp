@@ -27,7 +27,7 @@ namespace OpenImis.RestApi.Controllers.V2 {
 
         public IActionResult GetListSubItemItems()
         {
-            ClassMainServiceRequest getRequest = new ClassMainServiceRequest();
+            ClassSubItemRequest getRequest = new ClassSubItemRequest();
             var response = getRequest.SerializeDr();
             return Json(response);
         }
