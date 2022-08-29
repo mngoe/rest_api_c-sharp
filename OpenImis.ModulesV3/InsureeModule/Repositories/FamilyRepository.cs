@@ -125,6 +125,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                             InsureeDBId = i.InsureeId,
                             InsureeUUID = i.InsureeUUID
                         });
+                        UpdateChequeStatus(i.InsureeId);
                     }
 
                     foreach (var p in family.TblPolicy)
@@ -147,6 +148,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                             PolicyUUID = p.PolicyUUID,
                             Premium = premiums
                         });
+                        UpdatePolicyStatus(p.PolicyId,2);
 
                     }
 
@@ -251,8 +253,6 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                 InsureeUpd = insureeUpdParameter.Value == DBNull.Value ? 0 : (int)insureeUpdParameter.Value;
                 InsureeImported = insureeImportedParameter.Value == DBNull.Value ? 0 : (int)insureeImportedParameter.Value;
                 RV = (int)returnParameter.Value;
-                UpdateChequeStatus(InsureeUpd);
-                UpdatePolicyStatus(InsureeUpd); // call the function to updatethe policy status
 
                 if (RV == 0 && (InsureeImported > 0 || InsureeUpd > 0))
                 {
@@ -335,8 +335,9 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             {
                 var sql = "UPDATE tblChequeSanteImportLine " +
                           "SET chequeImportLineStatus = 'Used' "+
-                          " where  chequeImportLineCode = '" + Convert.ToString(insureeNumberLinked) + "' and chequeImportLineStatus != 'Cancel';";
-
+                          " where  chequeImportLineCode = "+
+                          "(select CHFID from tblInsuree where InsureeID='" + Convert.ToString(insureeNumberLinked) + "') "+
+                          " and chequeImportLineStatus != 'Cancel';";
                 DbConnection connection = imisContext.Database.GetDbConnection();
                 using (DbCommand cmd = connection.CreateCommand())
                 {
@@ -347,15 +348,13 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
         }
 
 
-        public void UpdatePolicyStatus(int insureeNumberLinked) //  updating the policy status when creating a family
+        public void UpdatePolicyStatus(int policyId, int status) //  updating the policy status when creating a family
         {
             using (var imisContext = new ImisDB())
             {
                 var sql = "UPDATE tblPolicy " +
-                            "SET PolicyStatus = '1' " +
-                            "From tblPolicy " +
-                            "inner join tblInsureePolicy " +
-                            "on tblPolicy.PolicyId = tblInsureePolicy.PolicyId and tblInsureePolicy.InsureeId = '" + Convert.ToString(insureeNumberLinked)+ "'";
+                            "SET PolicyStatus = '"+Convert.ToString(status)+"' " +
+                            "where tblPolicy.PolicyID = '" + Convert.ToString(policyId)+ "'";
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
                 using (DbCommand cmd = connection.CreateCommand())
