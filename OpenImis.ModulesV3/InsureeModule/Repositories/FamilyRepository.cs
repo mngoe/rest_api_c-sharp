@@ -334,7 +334,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             using (var imisContext = new ImisDB())
             {
                 var sql = "UPDATE tblChequeSanteImportLine " +
-                          "SET chequeImportLineStatus = 'Used' "+
+                          "SET chequeImportLineStatus = 'Used' , EffectiveDate=StartDate"+
                           " where  chequeImportLineCode = "+
                           "(select CHFID from tblInsuree where InsureeID='" + Convert.ToString(insureeNumberLinked) + "') "+
                           " and chequeImportLineStatus != 'Cancel';";
