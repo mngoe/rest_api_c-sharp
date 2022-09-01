@@ -332,7 +332,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             using (var imisContext = new ImisDB())
             {
                 var sql = "UPDATE tblChequeSanteImportLine " +
-                          "SET chequeImportLineStatus = 'Used' , EffectiveDate=StartDate"+
+                          "SET chequeImportLineStatus = 'Used'"+
                           " where  chequeImportLineCode = "+
                           "(select CHFID from tblInsuree where InsureeID='" + Convert.ToString(insureeNumberLinked) + "') "+
                           " and chequeImportLineStatus != 'Cancel';";
@@ -351,7 +351,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             using (var imisContext = new ImisDB())
             {
                 var sql = "UPDATE tblPolicy " +
-                            "SET PolicyStatus = '"+Convert.ToString(status)+"' " +
+                            "SET PolicyStatus = '"+Convert.ToString(status)+"', EffectiveDate=StartDate " +
                             "where tblPolicy.PolicyID = '" + Convert.ToString(policyId)+ "'";
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
