@@ -49,22 +49,22 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
             {
                 var locationIds = (from UD in imisContext.TblUsersDistricts
                                    join U in imisContext.TblUsers on UD.UserId equals U.UserId
-                                   where U.UserUUID == userUUID && UD.ValidityTo == null
+                                   where U.UserUUID == userUUID && U.ValidityTo == null && UD.ValidityTo == null
                                    select UD.LocationId)
                                    .ToList();
 
                 var familyId = (from I in imisContext.TblInsuree
                                 join F in imisContext.TblFamilies on I.FamilyId equals F.FamilyId
-                                join V in imisContext.TblVillages on F.LocationId equals V.VillageId
-                                join W in imisContext.TblWards on V.WardId equals W.WardId
-                                join D in imisContext.TblDistricts on W.DistrictId equals D.DistrictId
+                                join LV in imisContext.TblLocations on F.LocationId equals LV.LocationId
+                                join LW in imisContext.TblLocations on LV.ParentLocationId equals LW.LocationId
+                                join LD in imisContext.TblLocations on LW.ParentLocationId equals LD.LocationId
                                 where (I.Chfid == chfid
-                                    && locationIds.Contains(D.DistrictId)
-                                    && F.ValidityTo == null
                                     && I.ValidityTo == null
-                                    && V.ValidityTo == null
-                                    && W.ValidityTo == null
-                                    && D.ValidityTo == null)
+                                    && F.ValidityTo == null
+                                    && LV.ValidityTo == null
+                                    && LW.ValidityTo == null
+                                    && LD.ValidityTo == null
+                                    && locationIds.Contains(LD.LocationId))
                                 select F.FamilyId)
                                .FirstOrDefault();
 
@@ -223,9 +223,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                     "@PolicySent OUT, @PolicyImported OUT, @PolicyRejected OUT, @PolicyChanged OUT," +
                     "@PremiumSent OUT, @PremiumImported OUT, @PremiumRejected OUT";
 
-                DbConnection connection = imisContext.Database.GetDbConnection();
-
-                using (DbCommand cmd = connection.CreateCommand())
+                using (DbCommand cmd = imisContext.CreateCommand())
                 {
 
                     cmd.CommandText = sql;
@@ -235,7 +233,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                                             policyImportedParameter, policyRejectedParameter, policyChangedParameter, premiumSentParameter, premiumImportedParameter,
                                             premiumRejectedParameter });
 
-                    if (connection.State.Equals(ConnectionState.Closed)) connection.Open();
+                    imisContext.CheckConnection();
 
                     using (var reader = cmd.ExecuteReader())
                     {
