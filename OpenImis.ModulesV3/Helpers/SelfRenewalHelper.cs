@@ -119,7 +119,7 @@ namespace OpenImis.ModulesV3.Helpers
                     PolicyId = policy.PolicyId,
                     EnrollmentDate = policy.EnrollDate,
                     StartDate = policy.StartDate,
-                    EffectiveDate = policy.EffectiveDate,
+                    EffectiveDate = policy.StartDate,
                     ExpiryDate = policy.ExpiryDate,
                     ValidityFrom = DateTime.Now,
                     AuditUserId = -1,
