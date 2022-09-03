@@ -149,6 +149,7 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                             Premium = premiums
                         });
                         UpdatePolicyStatus(p.PolicyId,2);
+                        UpdateInsureePolicyStatus(i.InsureeId,p.PolicyId);
 
                     }
 
@@ -353,6 +354,25 @@ namespace OpenImis.ModulesV3.InsureeModule.Repositories
                 var sql = "UPDATE tblPolicy " +
                             "SET PolicyStatus = '"+Convert.ToString(status)+"', EffectiveDate=StartDate " +
                             "where tblPolicy.PolicyID = '" + Convert.ToString(policyId)+ "'";
+
+                DbConnection connection = imisContext.Database.GetDbConnection();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    if (connection.State.Equals(ConnectionState.Closed)) connection.Open();
+                    cmd.ExecuteReader();
+                }
+            }
+        }
+
+        public void UpdateInsureePolicyStatus(int insureeNumberLinked, int policyId) //  updating the policy status when creating a family
+        {
+            using (var imisContext = new ImisDB())
+            {
+                var sql = "UPDATE tblInsureePolicy " +
+                        "SET EffectiveDate=StartDate " +
+                        "where tblInsureePolicy.PolicyID = '" + Convert.ToString(policyId)+ "' "+
+                        " and  tblInsureePolicy.InsureeID = '" + Convert.ToString(insureeNumberLinked)+ "'";
 
                 DbConnection connection = imisContext.Database.GetDbConnection();
                 using (DbCommand cmd = connection.CreateCommand())
