@@ -11,5 +11,5 @@ services:
       - ./OpenImis.RestApi/config:/app/config
       - ./OpenImis.RestApi/logs:/app/log
       - ./OpenImis.RestApi/Certificates:/app/wwwRoot/Certificates
-      - ./openIMISphone:/openIMISphone
+      - ./openIMISphone:/app/openIMISphone
     restart: always
