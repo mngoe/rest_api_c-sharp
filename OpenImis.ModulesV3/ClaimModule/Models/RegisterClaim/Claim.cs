@@ -46,5 +46,13 @@ namespace OpenImis.ModulesV3.ClaimModule.Models.RegisterClaim
         public string ServiceCode { get; set; }
         public decimal ServicePrice { get; set; }
         public decimal ServiceQuantity { get; set; }
+        public List<SubServicesItems> SubServicesItems { get; set; }
+    }
+
+    public class SubServicesItems
+    {
+        public string Code { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Price { get; set; }
     }
 }
