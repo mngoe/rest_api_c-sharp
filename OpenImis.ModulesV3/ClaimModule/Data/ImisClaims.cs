@@ -238,8 +238,16 @@ namespace OpenImis.ModulesV3.ClaimModule.Data
 
         public DataTable GetClaimAdministrators()
         {
-            var sSQL = @"SELECT LastName,OtherNames,ClaimAdminCode,HFCode FROM tblClaimAdmin CA
-                         INNER JOIN tblHF H ON CA.HFID = H.HfID WHERE  H.ValidityTo IS NULL AND CA.ValidityTo IS NULL";
+//            var sSQL = @"SELECT LastName,OtherNames,ClaimAdminCode,HFCode FROM tblClaimAdmin CA
+//                         INNER JOIN tblHF H ON CA.HFID = H.HfID WHERE  H.ValidityTo IS NULL AND CA.ValidityTo IS NULL";
+
+            var sSQL = @"SELECT CA.LastName,CA.OtherNames,ClaimAdminCode,HFCode, U.UserID, Pu.program_id, P.Name
+FROM tblClaimAdmin CA
+INNER JOIN tblHF H ON CA.HFID = H.HfID 
+INNER JOIN tblUsers U ON CA.ClaimAdminCode = U.LoginName
+INNER JOIN tblProgram_user Pu ON U.UserID = Pu.interactiveuser_id
+INNER JOIN tblProgram P ON Pu.program_id = P.idProgram
+WHERE  H.ValidityTo IS NULL AND CA.ValidityTo IS NULL";
 
             DataHelper helper = new DataHelper(Configuration);
            

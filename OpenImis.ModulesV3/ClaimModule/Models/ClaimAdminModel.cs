@@ -10,5 +10,6 @@ namespace OpenImis.ModulesV3.ClaimModule.Models
         public string otherNames { get; set; }
         public string claimAdminCode { get; set; }
         public string HFCode { get; set; }
+        public string programList {get; set; }
     }
 }

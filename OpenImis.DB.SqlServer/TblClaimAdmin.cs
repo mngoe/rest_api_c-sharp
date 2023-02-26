@@ -8,6 +8,7 @@ namespace OpenImis.DB.SqlServer
         public TblClaimAdmin()
         {
             TblClaim = new HashSet<TblClaim>();
+            TblProgram = new HashSet<TblProgram>();
         }
 
         public int ClaimAdminId { get; set; }
@@ -23,7 +24,6 @@ namespace OpenImis.DB.SqlServer
         public int? AuditUserId { get; set; }
         public byte[] RowId { get; set; }
         public string EmailId { get; set; }
-
         public TblHf Hf { get; set; }
         public ICollection<TblClaim> TblClaim { get; set; }
     }
