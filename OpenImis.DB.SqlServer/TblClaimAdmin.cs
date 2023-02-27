@@ -8,6 +8,7 @@ namespace OpenImis.DB.SqlServer
         public TblClaimAdmin()
         {
             TblClaim = new HashSet<TblClaim>();
+            TblProgram = new HashSet<TblProgram>();
         }
 
         public int ClaimAdminId { get; set; }
