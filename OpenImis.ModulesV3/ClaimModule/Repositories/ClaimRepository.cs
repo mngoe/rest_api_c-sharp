@@ -279,7 +279,8 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         lastName = x.LastName,
                         otherNames = x.OtherNames,
                         claimAdminCode = x.ClaimAdminCode,
-                        HFCode = x.Hf.Hfcode
+                        HFCode = x.Hf.Hfcode,
+                        programList = x.Hf.Name
                     }).ToList()
                     /*.ForEach((x) => { 
                         _logger.LogDebug($"SP OUTPUT: {reader.GetValue(0)}");
@@ -287,6 +288,20 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         }
                     )*/
                     ;
+                    response.ForEach((x) => {
+                        Console.WriteLine("- {0}",x.claimAdminCode);
+                        responseProgram = imisContext.TblProgramUser
+                        .Where(c => c.ValidityTo == null)
+                        .Select(x => new ClaimAdminModel()
+                        {
+                            lastName = x.LastName,
+                            otherNames = x.OtherNames,
+                            claimAdminCode = x.ClaimAdminCode,
+                            HFCode = x.Hf.Hfcode,
+                            programList = x.Hf.Name
+                        }).ToList()
+                        _logger.LogDebug("For Each GetClaimAdministrator");
+                    });
             }
 
             return response;
