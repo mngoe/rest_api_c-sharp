@@ -281,9 +281,12 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         claimAdminCode = x.ClaimAdminCode,
                         HFCode = x.Hf.Hfcode
                     }).ToList()
-                    .ForEach((x) => { 
-                        if (admin_claims.ContainsKey(x.claim_uuid)) admin_claims[x.claim_uuid].items.Add(x); }
-                    );
+                    /*.ForEach((x) => { 
+                        _logger.LogDebug($"SP OUTPUT: {reader.GetValue(0)}");
+                        //if (admin_claims.ContainsKey(x.claimAdminCode)) admin_claims[x.claim_uuid].items.Add(x); 
+                        }
+                    )*/
+                    ;
             }
 
             return response;
