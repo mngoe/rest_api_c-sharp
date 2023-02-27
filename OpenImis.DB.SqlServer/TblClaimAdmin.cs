@@ -24,6 +24,7 @@ namespace OpenImis.DB.SqlServer
         public byte[] RowId { get; set; }
         public string EmailId { get; set; }
         public TblHf Hf { get; set; }
+        public ICollection<TblProgram> programList { get; set; }
         public ICollection<TblClaim> TblClaim { get; set; }
     }
 }
