@@ -64,6 +64,7 @@ namespace OpenImis.DB.SqlServer
         public virtual DbSet<TblProductItems> TblProductItems { get; set; }
         public virtual DbSet<TblProductServices> TblProductServices { get; set; }
         public virtual DbSet<TblProfessions> TblProfessions { get; set; }
+        public virtual DbSet<TblProgram> TblProgram { get; set; }
         public virtual DbSet<TblRelations> TblRelations { get; set; }
         public virtual DbSet<TblRelDistr> TblRelDistr { get; set; }
         public virtual DbSet<TblRelIndex> TblRelIndex { get; set; }
@@ -2389,6 +2390,21 @@ namespace OpenImis.DB.SqlServer
                     .HasForeignKey(d => d.ServiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_tblProductServices_tblServices-ServiceID");
+            });
+
+
+            modelBuilder.Entity<TblProgram>(entity =>
+            {
+                entity.HasKey(e => e.idProgram);
+
+                entity.ToTable("tblProgram");
+
+                entity.HasIndex(e => e.Name)
+                    .HasName("NCI_tblProgram_Name");
+
+                entity.HasIndex(e => e.validityDate)
+                    .HasName("NCI_tblProgram_validityDate");
+
             });
 
             modelBuilder.Entity<TblProfessions>(entity =>
