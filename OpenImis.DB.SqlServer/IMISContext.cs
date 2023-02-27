@@ -2398,12 +2398,8 @@ namespace OpenImis.DB.SqlServer
                 entity.HasKey(e => e.idProgram);
 
                 entity.ToTable("tblProgram");
-
-                entity.HasIndex(e => e.Name)
-                    .HasName("NCI_tblProgram_Name");
-
-                entity.HasIndex(e => e.validityDate)
-                    .HasName("NCI_tblProgram_validityDate");
+                entity.Property(e => e.Name).HasColumnName("Name");
+                entity.Property(e => e.validityDate).HasName("validityDate");
 
             });
 
