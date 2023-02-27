@@ -2399,7 +2399,7 @@ namespace OpenImis.DB.SqlServer
 
                 entity.ToTable("tblProgram");
                 entity.Property(e => e.Name).HasColumnName("Name");
-                entity.Property(e => e.validityDate).HasName("validityDate");
+                entity.Property(e => e.validityDate).HasColumnName("validityDate");
 
             });
 
