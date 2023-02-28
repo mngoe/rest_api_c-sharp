@@ -299,8 +299,7 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                             claimAdminCode = x.ClaimAdminCode,
                             HFCode = x.Hf.Hfcode,
                             programList = x.Hf.Name
-                        }).ToList()
-                        _logger.LogDebug("For Each GetClaimAdministrator");
+                        }).ToList();
                     });
             }
 
