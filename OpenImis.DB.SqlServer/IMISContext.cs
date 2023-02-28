@@ -65,7 +65,7 @@ namespace OpenImis.DB.SqlServer
         public virtual DbSet<TblProductServices> TblProductServices { get; set; }
         public virtual DbSet<TblProfessions> TblProfessions { get; set; }
         public virtual DbSet<TblProgram> TblProgram { get; set; }
-        public virtual DbSet<TblProgramUser> TblProgramUser { get; set; }
+        public virtual DbSet<TblProgram_user> TblProgram_user { get; set; }
         public virtual DbSet<TblRelations> TblRelations { get; set; }
         public virtual DbSet<TblRelDistr> TblRelDistr { get; set; }
         public virtual DbSet<TblRelIndex> TblRelIndex { get; set; }
@@ -2404,19 +2404,19 @@ namespace OpenImis.DB.SqlServer
 
             });
 
-            modelBuilder.Entity<TblProgramUser>(entity =>
+            modelBuilder.Entity<TblProgram_user>(entity =>
             {
                 entity.HasKey(e => e.id);
 
                 entity.ToTable("tblProgram_user");
 
                 entity.HasOne(d => d.Insuree)
-                    .WithMany(p => p.TblProgramUser)
+                    .WithMany(p => p.TblProgram_user)
                     .HasForeignKey(d => d.InsureeId)
                     .HasConstraintName("tblProgram_user_interactiveuser_id_289b9595_fk_tblUsers_UserID");
 
                 entity.HasOne(d => d.Program)
-                    .WithMany(p => p.TblProgramUser)
+                    .WithMany(p => p.TblProgram_user)
                     .HasForeignKey(d => d.program_id)
                     .HasConstraintName("tblProgram_user_program_id_9e6ebdcf_fk_tblProgram_idProgram");
             });

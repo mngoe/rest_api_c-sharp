@@ -290,7 +290,7 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                     ;
                     response.ForEach((x) => {
                         Console.WriteLine("- {0}",x.claimAdminCode);
-                        responseProgram = imisContext.TblProgramUser
+                        responseProgram = imisContext.TblProgram_user
                         .Where(c => c.ValidityTo == null)
                         .Select(x => new ClaimAdminModel()
                         {
