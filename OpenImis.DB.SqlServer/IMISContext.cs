@@ -2410,12 +2410,12 @@ namespace OpenImis.DB.SqlServer
 
                 entity.ToTable("tblProgram_user");
 
-                entity.HasOne(d => d.Insuree)
+                entity.HasOne(d => d.interactiveuser_id)
                     .WithMany(p => p.TblProgram_user)
                     .HasForeignKey(d => d.InsureeId)
                     .HasConstraintName("tblProgram_user_interactiveuser_id_289b9595_fk_tblUsers_UserID");
 
-                entity.HasOne(d => d.Program)
+                entity.HasOne(d => d.program_id)
                     .WithMany(p => p.TblProgram_user)
                     .HasForeignKey(d => d.program_id)
                     .HasConstraintName("tblProgram_user_program_id_9e6ebdcf_fk_tblProgram_idProgram");
