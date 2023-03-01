@@ -283,24 +283,32 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         programList = x.Hf.Hfname
                     }).ToList();
                     response.ForEach((x) => {
+                        // Get User Id from ClaimAdminCode
                         List<TblUsers> user = new List<TblUsers>();
+                        //Console.WriteLine("- {0}",x.claimAdminCode);
+                        user = imisContext.TblUsers
+                        .Where(c => c.LoginName == x.claimAdminCode)
+                        .ToList();
 
-                        Console.WriteLine("- {0}",x.claimAdminCode);
-
+                        // Get Program Id depending on User Id
                         List<TblProgram_user> responseProgramUser = new List<TblProgram_user>();
                         responseProgramUser = imisContext.TblProgram_user
-                        .Where(c => c.interactiveuser_id == 49)
+                        .Where(c => c.interactiveuser_id == user[0].UserId)
                         .ToList();
-                        Console.WriteLine("---- {0}",responseProgramUser);
+                        //Console.WriteLine("---- {0}",responseProgramUser);
                         responseProgramUser.ForEach((y) => {
                             Console.WriteLine("----++ {0}", y.program_id);
+                            // Get Program List depending on Program // User
                             List<TblProgram> responseProgram = new List<TblProgram>();
                             responseProgram = imisContext.TblProgram
                             .Where(c => c.idProgram == y.program_id)
                             .ToList();
                             responseProgram.ForEach((z) => {
+                                x.programList += z.Name;
+                                x.programList += ";";
                                 Console.WriteLine("----++++ {0}", z.idProgram);
                                 Console.WriteLine("----++++ {0}", z.Name);
+
                             });
                         });
                     });
