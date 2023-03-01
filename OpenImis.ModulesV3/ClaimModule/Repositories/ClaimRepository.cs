@@ -281,25 +281,11 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         claimAdminCode = x.ClaimAdminCode,
                         HFCode = x.Hf.Hfcode,
                         programList = x.Hf.Name
-                    }).ToList()
-                    /*.ForEach((x) => { 
-                        _logger.LogDebug($"SP OUTPUT: {reader.GetValue(0)}");
-                        //if (admin_claims.ContainsKey(x.claimAdminCode)) admin_claims[x.claim_uuid].items.Add(x); 
-                        }
-                    )*/
-                    ;
+                    }).ToList();
                     response.ForEach((x) => {
                         Console.WriteLine("- {0}",x.claimAdminCode);
-                        responseProgram = imisContext.TblProgram_user
-                        .Where(c => c.ValidityTo == null)
-                        .Select(x => new ClaimAdminModel()
-                        {
-                            lastName = x.LastName,
-                            otherNames = x.OtherNames,
-                            claimAdminCode = x.ClaimAdminCode,
-                            HFCode = x.Hf.Hfcode,
-                            programList = x.Hf.Name
-                        }).ToList();
+                        responseProgram = imisContext.TblProgram_user.ToList();
+                        Console.WriteLine("---- {0}",responseProgram);
                     });
             }
 
