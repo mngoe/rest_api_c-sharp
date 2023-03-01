@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OpenImis.DB.SqlServer
 {
-    public partial class TblProgram_ser
+    public partial class TblProgram_usser
     {
         public int id { get; set; }
         public string program_id { get; set; }
