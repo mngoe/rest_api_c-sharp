@@ -2397,7 +2397,6 @@ namespace OpenImis.DB.SqlServer
             modelBuilder.Entity<TblProgram>(entity =>
             {
                 entity.HasKey(e => e.idProgram);
-
                 entity.ToTable("tblProgram");
                 entity.Property(e => e.Name).HasColumnName("Name");
                 entity.Property(e => e.validityDate).HasColumnName("validityDate");
@@ -2407,9 +2406,8 @@ namespace OpenImis.DB.SqlServer
             modelBuilder.Entity<TblProgram_user>(entity =>
             {
                 entity.HasKey(e => e.id);
-
                 entity.ToTable("tblProgram_user");
-
+                /*
                 entity.HasOne(d => d.interactiveuser_id)
                     .WithMany(p => p.TblProgram_user)
                     .HasForeignKey(d => d.InsureeId)
@@ -2419,6 +2417,7 @@ namespace OpenImis.DB.SqlServer
                     .WithMany(p => p.TblProgram_user)
                     .HasForeignKey(d => d.program_id)
                     .HasConstraintName("tblProgram_user_program_id_9e6ebdcf_fk_tblProgram_idProgram");
+                    */
             });
 
             modelBuilder.Entity<TblProfessions>(entity =>

@@ -280,12 +280,29 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         otherNames = x.OtherNames,
                         claimAdminCode = x.ClaimAdminCode,
                         HFCode = x.Hf.Hfcode,
-                        programList = x.Hf.Name
+                        programList = x.Hf.Hfname
                     }).ToList();
                     response.ForEach((x) => {
+                        List<TblUsers> user = new List<TblUsers>();
+
                         Console.WriteLine("- {0}",x.claimAdminCode);
-                        responseProgram = imisContext.TblProgram_user.ToList();
-                        Console.WriteLine("---- {0}",responseProgram);
+
+                        List<TblProgram_user> responseProgramUser = new List<TblProgram_user>();
+                        responseProgramUser = imisContext.TblProgram_user
+                        .Where(c => c.interactiveuser_id == 49)
+                        .ToList();
+                        Console.WriteLine("---- {0}",responseProgramUser);
+                        responseProgramUser.ForEach((y) => {
+                            Console.WriteLine("----++ {0}", y.program_id);
+                            List<TblProgram> responseProgram = new List<TblProgram>();
+                            responseProgram = imisContext.TblProgram
+                            .Where(c => c.idProgram == y.program_id)
+                            .ToList();
+                            responseProgram.ForEach((z) => {
+                                Console.WriteLine("----++++ {0}", z.idProgram);
+                                Console.WriteLine("----++++ {0}", z.Name);
+                            });
+                        });
                     });
             }
 
