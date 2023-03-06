@@ -297,7 +297,7 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                         .ToList();
                         //Console.WriteLine("---- {0}",responseProgramUser);
                         responseProgramUser.ForEach((y) => {
-                            Console.WriteLine("----++ {0}", y.program_id);
+                            //Console.WriteLine("----++ {0}", y.program_id);
                             // Get Program List depending on Program // User
                             List<TblProgram> responseProgram = new List<TblProgram>();
                             responseProgram = imisContext.TblProgram
@@ -306,8 +306,8 @@ namespace OpenImis.ModulesV3.ClaimModule.Repositories
                             responseProgram.ForEach((z) => {
                                 x.programList += z.Name;
                                 x.programList += ";";
-                                Console.WriteLine("----++++ {0}", z.idProgram);
-                                Console.WriteLine("----++++ {0}", z.Name);
+                                //Console.WriteLine("----++++ {0}", z.idProgram);
+                                //Console.WriteLine("----++++ {0}", z.Name);
 
                             });
                         });
